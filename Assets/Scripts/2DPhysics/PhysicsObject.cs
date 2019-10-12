@@ -64,6 +64,7 @@ public class PhysicsObject : MonoBehaviour
 
         move = Vector2.up * deltaPosition.y;
         Movement(move, true);
+       
     }
 
     private void Movement(Vector2 move, bool yMovement)
@@ -109,6 +110,15 @@ public class PhysicsObject : MonoBehaviour
     protected virtual void ComputeVelocity()
     { 
     
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        foreach (RaycastHit2D hit in hitBufferList)
+        {
+            Gizmos.DrawSphere(hit.collider.ClosestPoint(hit.point), .1f);
+        }
     }
 }
 

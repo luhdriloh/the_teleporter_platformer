@@ -7,7 +7,7 @@ public class MovingPlatform : MonoBehaviour
     public float _maxSpeed = 1f;
     public float _maxXDistanceMove = 2;
 
-    private Collider2D _collider;
+    private Collider2D[] _colliders;
     private PlayerPlatformerController _player;
     private Vector3 _newPosition;
     private float _minXDistance;
@@ -15,7 +15,7 @@ public class MovingPlatform : MonoBehaviour
 
     private void Start()
     {
-        _collider = GetComponent<Collider2D>();
+        _colliders = GetComponentsInChildren<Collider2D>();
         _newPosition = transform.position;
         _minXDistance = transform.position.x;
         _maxXDistanceMove += _minXDistance;
@@ -60,11 +60,15 @@ public class MovingPlatform : MonoBehaviour
         };
 
         Collider2D[] result = new Collider2D[4];
-        int collidersHit = _collider.OverlapCollider(filter, result);
 
-        for (int i = 0; i < collidersHit; i++)
+        foreach (Collider2D colliderHit in _colliders)
         {
-            result[i].GetComponent<AddOutsideDistance>()._addOutsideDistance.x = _maxSpeed * Time.deltaTime;
+            int collidersHit = colliderHit.OverlapCollider(filter, result);
+
+            for (int i = 0; i < collidersHit; i++)
+            {
+                result[i].GetComponent<AddOutsideDistance>().AddOutsideDistanceVector(Vector2.right * (_maxSpeed * Time.deltaTime));
+            }
         }
     }
 

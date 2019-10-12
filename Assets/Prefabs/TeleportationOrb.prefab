@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 3192128206502288928}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4, y: 4, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -98,9 +98,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2ee527efd87b4f5789c313f7ddf8b0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxVelocity: 10
+  _maxVelocity: 11
   _distanceToCalculateSpeed: 10
-  _maxGhostDistance: 7
+  _maxGhostDistance: 12
 --- !u!50 &3192128206502288929
 Rigidbody2D:
   serializedVersion: 4
@@ -116,7 +116,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 200
-  m_GravityScale: 0.7
+  m_GravityScale: 0.8
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1

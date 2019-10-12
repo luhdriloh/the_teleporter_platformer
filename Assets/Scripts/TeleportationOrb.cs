@@ -29,10 +29,7 @@ public class TeleportationOrb : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Time.timeScale = Mathf.Abs(Time.timeScale - 1) < Mathf.Epsilon ? 0 : 1;
-        }
+        // if the ball is grounded then transport the a little higher
     }
 
     private Vector2 GetThrownVelocityFromAimPoint(Vector2 aimPoint)

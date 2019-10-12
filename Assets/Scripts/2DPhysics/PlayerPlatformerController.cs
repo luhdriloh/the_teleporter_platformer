@@ -6,25 +6,29 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class PlayerPlatformerController : PhysicsObject
 {
+    public GameObject _teleportationOrbPrototype;
+    public ParticleSystem _onLandParticleSystem;
+    public Transform _throwBallPosition;
     public static int _orbsAllowedInPlay = 2;
     public float _maxSpeed = 7f;
     public float _jumpTakeOffSpeed = 7f;
-    public GameObject _teleportationOrbPrototype;
 
     private SpriteRenderer _spriteRenderer;
     private Animator _animator;
+    private bool _onGround;
+
+    private static List<TeleportationOrb> _orbs = new List<TeleportationOrb>();
     private TeleportationOrb _currentOrbBeingThrown;
     private bool _teleported;
     private Vector2 _teleportSpeed;
-    private static List<TeleportationOrb> _orbs = new List<TeleportationOrb>();
-
-
+    private Vector2 _point;
 
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
-        _teleported = false;
+        _onGround = true;
+        //_teleported = false;
     }
 
     protected override void ComputeVelocity()
@@ -50,10 +54,28 @@ public class PlayerPlatformerController : PhysicsObject
             _spriteRenderer.flipX = !_spriteRenderer.flipX;
         }
 
+        if (_grounded && !_onGround)
+        {
+            _onLandParticleSystem.Emit(30);
+        }
+
+        _onGround = _grounded;
+
+        _animator.SetBool("Grounded", _grounded);
+        _animator.SetFloat("VelocityX", Mathf.Abs(_velocity.x) / _maxSpeed);
+        _animator.SetFloat("VelocityY", _velocity.y);
+
+        GetPlayerInput();
+
+        _targetVelocity = move * _maxSpeed;
+    }
+
+    private void GetPlayerInput()
+    {
         // set up teleportation orb
         if (Input.GetMouseButtonDown(0) && _orbs.Count < 2)
         {
-            TeleportationOrb orb = Instantiate(_teleportationOrbPrototype, transform.position + Vector3.back, Quaternion.identity).GetComponent<TeleportationOrb>();
+            TeleportationOrb orb = Instantiate(_teleportationOrbPrototype, _throwBallPosition.position, Quaternion.identity).GetComponent<TeleportationOrb>();
             orb.transform.SetParent(transform);
             _currentOrbBeingThrown = orb;
             _orbs.Add(orb);
@@ -61,7 +83,7 @@ public class PlayerPlatformerController : PhysicsObject
         else if (Input.GetMouseButton(0) && _currentOrbBeingThrown != null)
         {
             Vector3 aimpoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-             _currentOrbBeingThrown.CreateTrajectoryGhost(aimpoint);
+            _currentOrbBeingThrown.CreateTrajectoryGhost(aimpoint);
         }
         else if (Input.GetMouseButtonUp(0) && _currentOrbBeingThrown != null)
         {
@@ -76,10 +98,6 @@ public class PlayerPlatformerController : PhysicsObject
             orb.TransportPlayerToOrb();
         }
 
-        // get the x and the y speed
-        // grounded or not
-        //_animator.SetFloat("velocityX", Mathf.Abs(_velocity.x) / _maxSpeed);
-
         // set up animator values
         if (_teleported)
         {
@@ -87,16 +105,48 @@ public class PlayerPlatformerController : PhysicsObject
             _teleported = false;
             return;
         }
-
-        _targetVelocity = move * _maxSpeed;
     }
 
     public void Teleport(Vector3 positionToTeleport, Vector3 velocity)
     {
         positionToTeleport.z = transform.position.z;
         _teleportSpeed = velocity;
-        transform.position = positionToTeleport;
         _teleported = true;
+
+        //Vector2 castVector = positionToTeleport - transform.position;
+        //transform.position = positionToTeleport;
+
+        //RaycastHit2D[] hitBuffer = new RaycastHit2D[2];
+        //int count = 0;
+        //int i = 0;
+
+        //do
+        //{
+        //    i++;
+        //    count = _rigidbody.Cast(Vector2.up, _contactFilter, hitBuffer, .01f);
+        //    Debug.Log(count);
+        //    // get the closest point
+        //    if (count > 0)
+        //    {
+        //        _point = hitBuffer[0].collider.ClosestPoint(positionToTeleport);
+        //        Vector2 newPositionDirection = ((Vector2)positionToTeleport - _point).normalized * .5f;
+        //        positionToTeleport += (Vector3)newPositionDirection;
+        //        castVector = positionToTeleport - transform.position;
+        //    }
+        //}
+        //while (count > 0 && i < 6);
+
+        transform.position = positionToTeleport + Vector3.up * .6f;
+
+        // cast the rigid body to the location in question, if you hit a collider
+        // move to the closest not hit point
+        // while (colliders continue to be hit move the character)
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(_point, .2f);
     }
 }
 

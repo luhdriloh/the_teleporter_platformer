@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: befbd9814fcb7447f8b18ad7507dd2af
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -7990750155978559325
+    second: Dust Particle_0
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -120,7 +123,28 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Dust Particle_0
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 4
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb709fc4b6317406c93d7fe2ad68d54b
+      internalID: -7990750155978559325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

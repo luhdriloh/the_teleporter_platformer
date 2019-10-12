@@ -17,4 +17,14 @@ public class AddOutsideDistance : MonoBehaviour
         _rigidbody.position = _rigidbody.position + _addOutsideDistance;
         _addOutsideDistance = Vector2.zero;
     }
+
+    public void AddOutsideDistanceVector(Vector2 distance)
+    {
+        if (_addOutsideDistance != Vector2.zero)
+        {
+            return;
+        }
+
+        _addOutsideDistance = distance;
+    }
 }
