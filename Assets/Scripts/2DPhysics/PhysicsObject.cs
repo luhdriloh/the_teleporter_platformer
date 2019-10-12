@@ -111,15 +111,6 @@ public class PhysicsObject : MonoBehaviour
     { 
     
     }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        foreach (RaycastHit2D hit in hitBufferList)
-        {
-            Gizmos.DrawSphere(hit.collider.ClosestPoint(hit.point), .1f);
-        }
-    }
 }
 
 

@@ -34,15 +34,13 @@ public class MovingPlatform : MonoBehaviour
         {
             _movingLeft = !_movingLeft;
             _maxSpeed *= -1;
-            Vector3 newPosition = transform.position;
-            newPosition.x = _minXDistance + .001f;
+            _newPosition.x = _minXDistance + .001f;
         }
         else if (transform.position.x > _maxXDistanceMove)
         {
             _movingLeft = !_movingLeft;
             _maxSpeed *= -1;
-            Vector3 newPosition = transform.position;
-            newPosition.x = _maxXDistanceMove - .001f;
+            _newPosition.x = _maxXDistanceMove - .001f;
         }
 
         CheckCollisions();

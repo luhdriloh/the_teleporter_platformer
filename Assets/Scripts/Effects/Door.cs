@@ -7,20 +7,22 @@ public class Door : MonoBehaviour
 {
     public PuzzleColor _doorColor;
     public Vector2 _directionToMove;
+    public Transform _moveDirectionArrow;
     public float _speed;
 
     private float _height;
     private Vector2 _moveStart;
     private Vector2 _moveEnd;
-    private float _startTime;
+    private Vector2 _originalArrowDirection;
     private bool _buttonPressed = false;
 
     private void Awake()
     {
         Button.AddButtonPressedListener(ButtonPressedHandler);
-        _height = GetComponent<SpriteRenderer>().bounds.size.y - .6f;
+        _height = GetComponent<SpriteRenderer>().bounds.size.y;
         _moveStart = transform.position;
         _moveEnd = _moveStart + _directionToMove.normalized * _height;
+        _originalArrowDirection = transform.up;
     }
 
 
@@ -50,8 +52,18 @@ public class Door : MonoBehaviour
             if (fractionOfJourney >= 1)
             {
                 _directionToMove *= -1;
+                transform.position = _moveEnd;
+
+                Vector2 temp = _moveEnd;
                 _moveEnd = _moveStart;
-                _moveStart = transform.position;
+                _moveStart = temp;
+
+                // change the door move direction
+                Vector3 newDirectionVector = (_moveEnd - _moveStart).normalized * 2;
+                var angle = Vector3.Angle(_originalArrowDirection, _moveDirectionArrow.up + newDirectionVector);
+                Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                _moveDirectionArrow.rotation = rotation;
+
                 _buttonPressed = false;
             }
         }

@@ -12,6 +12,7 @@ public enum PuzzleColor
     GREEN
 }
 
+[RequireComponent(typeof(Collider2D))]
 public class Button : MonoBehaviour
 {
     public static event ButtonPressed _buttonEvent;
@@ -20,7 +21,6 @@ public class Button : MonoBehaviour
 
     private SpriteRenderer _spriteRenderer;
     private Collider2D _collider;
-    private bool _pressed;
 
     // for the button to go down we need
     // - distance to go down
@@ -30,7 +30,6 @@ public class Button : MonoBehaviour
     {
         _collider = GetComponent<Collider2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _pressed = false;
     }
 
 
@@ -54,7 +53,6 @@ public class Button : MonoBehaviour
         Vector3 newPosition = transform.position;
         newPosition.y += _buttonPressDepth;
         transform.position = newPosition;
-        _pressed = true;
 
         OnButtonPress();
     }
@@ -65,7 +63,6 @@ public class Button : MonoBehaviour
         Vector3 newPosition = transform.position;
         newPosition.y -= _buttonPressDepth;
         transform.position = newPosition;
-        _pressed = false;
     }
 
 

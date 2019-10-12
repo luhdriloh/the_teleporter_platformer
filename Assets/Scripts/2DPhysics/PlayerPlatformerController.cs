@@ -21,7 +21,6 @@ public class PlayerPlatformerController : PhysicsObject
     private TeleportationOrb _currentOrbBeingThrown;
     private bool _teleported;
     private Vector2 _teleportSpeed;
-    private Vector2 _point;
 
     private void Awake()
     {
@@ -137,16 +136,6 @@ public class PlayerPlatformerController : PhysicsObject
         //while (count > 0 && i < 6);
 
         transform.position = positionToTeleport + Vector3.up * .6f;
-
-        // cast the rigid body to the location in question, if you hit a collider
-        // move to the closest not hit point
-        // while (colliders continue to be hit move the character)
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(_point, .2f);
     }
 }
 
