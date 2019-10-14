@@ -60,11 +60,12 @@ public class PhysicsObject : MonoBehaviour
         Vector2 moveAlongGround = new Vector2(_groundNormal.y, -_groundNormal.x);
 
         Vector2 move = moveAlongGround * deltaPosition.x;
+        //Debug.Log("moveX: " + move);
         Movement(move, false);
 
         move = Vector2.up * deltaPosition.y;
+        //Debug.Log("moveY: " + move);
         Movement(move, true);
-       
     }
 
     private void Movement(Vector2 move, bool yMovement)
@@ -72,6 +73,8 @@ public class PhysicsObject : MonoBehaviour
         float distance = move.magnitude;
         if (distance > _minMoveDistance)
         {
+            // you cast the rigidbody to make sure that you don't get stuck inside another collider
+            //   its like a little bit of padding
             int count = _rigidbody.Cast(move, _contactFilter, _hitbuffer, distance + _shellRadius);
             hitBufferList.Clear();
 
@@ -83,6 +86,7 @@ public class PhysicsObject : MonoBehaviour
             for (int i = 0; i < hitBufferList.Count; i++)
             { 
                 Vector2 currentNormal = hitBufferList[i].normal;
+                //Debug.Log("current normal: " + currentNormal);
                 if (currentNormal.y > _minGroundNormalY)
                 {
                     _grounded = true;
@@ -96,11 +100,19 @@ public class PhysicsObject : MonoBehaviour
                 float projection = Vector2.Dot(_velocity, currentNormal);
                 if (projection < 0)
                 {
+                    // this removes any velocity that is in the direction
+                    //   opposing the normal 
                     _velocity = _velocity - projection * currentNormal;
                 }
 
+                //Debug.Log("hit buffer - shell: " + (hitBufferList[i].distance - _shellRadius));
                 float modifiedDistance = hitBufferList[i].distance - _shellRadius;
                 distance = modifiedDistance < distance ? modifiedDistance : distance;
+                //if (yMovement)
+                //{
+                //    Debug.Log("hit buffer distance: " + hitBufferList[i].distance);
+                //    Debug.Log("distance: " + distance);
+                //}
             }
         }
 

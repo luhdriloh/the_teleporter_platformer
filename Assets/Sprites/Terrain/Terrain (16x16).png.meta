@@ -440,6 +440,9 @@ TextureImporter:
   - first:
       213: -5145103406855989666
     second: Terrain (16x16)_145
+  - first:
+      213: -9166483627622830739
+    second: Terrain (16x16)_146
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -3621,7 +3624,7 @@ TextureImporter:
         width: 16
         height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3629,6 +3632,27 @@ TextureImporter:
       bones: []
       spriteID: df35a5254b7484dea8aaaefbcf4c5d87
       internalID: -5145103406855989666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Terrain (16x16)_146
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 160
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b773025e8149f4d39a7b913ec4e7f8c0
+      internalID: -9166483627622830739
       vertices: []
       indices: 
       edges: []
