@@ -11,7 +11,6 @@ public class MovingPlatform : MonoBehaviour
     private PlayerPlatformerController _player;
     private Vector3 _newPosition;
     private float _minXDistance;
-    private bool _movingLeft = true;
 
     private void Start()
     {
@@ -32,14 +31,12 @@ public class MovingPlatform : MonoBehaviour
 
         if (transform.position.x < _minXDistance)
         {
-            _movingLeft = !_movingLeft;
-            _maxSpeed *= Mathf.Abs(_maxSpeed) * -1;
+            _maxSpeed = Mathf.Abs(_maxSpeed);
             _newPosition.x = _minXDistance + .001f;
         }
         else if (transform.position.x > _maxXDistanceMove)
         {
-            _movingLeft = !_movingLeft;
-            _maxSpeed *= Mathf.Abs(_maxSpeed);
+            _maxSpeed = Mathf.Abs(_maxSpeed) * -1;
             _newPosition.x = _maxXDistanceMove - .001f;
         }
 
