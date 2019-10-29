@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 3531401945172825634}
   - component: {fileID: 3531401945172825661}
   m_Layer: 9
-  m_Name: HeavyDoors
+  m_Name: MovingPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -180,6 +180,7 @@ MonoBehaviour:
   _doorColor: 1
   _directionToMove: {x: 0, y: 1}
   _moveDirectionArrow: {fileID: 3531401943966224867}
+  _distanceToTravel: 0
   _speed: 2
 --- !u!61 &3531401945172825661
 BoxCollider2D:

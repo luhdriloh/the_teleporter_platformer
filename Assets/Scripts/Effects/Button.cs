@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void ButtonPressed(PuzzleColor color);
+public delegate void ButtonPressed(PuzzleColor color, bool state);
 
 public enum PuzzleColor
 { 
@@ -54,7 +54,7 @@ public class Button : MonoBehaviour
         newPosition.y += _buttonPressDepth;
         transform.position = newPosition;
 
-        OnButtonPress();
+        OnButtonPress(true);
     }
 
 
@@ -63,6 +63,8 @@ public class Button : MonoBehaviour
         Vector3 newPosition = transform.position;
         newPosition.y -= _buttonPressDepth;
         transform.position = newPosition;
+
+        OnButtonPress(false);
     }
 
 
@@ -72,11 +74,11 @@ public class Button : MonoBehaviour
     }
 
 
-    public void OnButtonPress()
+    public void OnButtonPress(bool state)
     {
         if (_buttonEvent != null)
         {
-            _buttonEvent(_buttonColor);
+            _buttonEvent(_buttonColor, state);
         }
     }
 }

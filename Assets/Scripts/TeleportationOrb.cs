@@ -29,7 +29,7 @@ public class TeleportationOrb : MonoBehaviour
 
     private void Update()
     {
-        // if the ball is grounded then transport the a little higher
+        // CAN ONLY TRANPORT WHEN GROUNDED
     }
 
     private Vector2 GetThrownVelocityFromAimPoint(Vector2 aimPoint)
@@ -112,6 +112,11 @@ public class TeleportationOrb : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         _rigidbody.velocity = Vector2.zero;
+    }
+
+    private void OnDeath()
+    { 
+        
     }
 }
 
