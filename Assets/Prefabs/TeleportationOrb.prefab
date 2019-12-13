@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3192128206502288957}
   - component: {fileID: 7089361334375783533}
   - component: {fileID: 1643520862189434165}
+  - component: {fileID: 2368051504206307438}
   m_Layer: 10
   m_Name: TeleportationOrb
   m_TagString: Untagged
@@ -30,8 +31,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3192128206502288928}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -74,13 +75,13 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -216716444197128309, guid: 8728305530e44499993444dcc3ee16c8,
+  m_Sprite: {fileID: -3919779002189068522, guid: bec1ce58c8d4b46658669e7f9eb24ea0,
     type: 3}
-  m_Color: {r: 0.07075471, g: 0.81300795, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.31, y: 0.31}
+  m_Size: {x: 0.4375, y: 0.4375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -101,6 +102,7 @@ MonoBehaviour:
   _maxVelocity: 11
   _distanceToCalculateSpeed: 10
   _maxGhostDistance: 12
+  _minGroundNormalY: 0.65
 --- !u!50 &3192128206502288929
 Rigidbody2D:
   serializedVersion: 4
@@ -115,7 +117,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 200
+  m_AngularDrag: 212.55
   m_GravityScale: 0.8
   m_Material: {fileID: 0}
   m_Interpolate: 0
@@ -137,7 +139,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.14
+  m_Radius: 0.44
 --- !u!120 &7089361334375783533
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -256,3 +258,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _addOutsideDistance: {x: 0, y: 0}
+--- !u!114 &2368051504206307438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3192128206502288928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7a957e37da95464baa8067fc6756f4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startScale: {x: 1, y: 1}
+  _endScale: {x: 1, y: 1}
+  _trailLifetime: 0.7
+  _spawnType: 1
+  _timeBetweenTrailSpawn: 0.1
+  _distanceBetweenTrailSpawn: 1
+  _alphaUpdateOn: 1
+  _maxAlpha: 0.8
+  _minAlpha: 0.2
+  _useSolidColors: 0
+  _rainbowMode: 0
+  _userSelectedColorPalette: []

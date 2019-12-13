@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using SpriteTrailRenderer;
 using UnityEngine;
 
 
@@ -9,10 +10,13 @@ public class TeleportationOrb : MonoBehaviour
     public float _maxVelocity = 15f;
     public float _distanceToCalculateSpeed = 7f;
     public float _maxGhostDistance = 3f;
+    public float _minGroundNormalY = .65f;
 
     private Rigidbody2D _rigidbody;
     private LineRenderer _lineRenderer;
     private PlayerPlatformerController _player;
+    private SpriteTrailRenderer.SpriteTrailRenderer _trail;
+    private ContactFilter2D _contactFilter;
 
     private void OnEnable()
     {
@@ -23,13 +27,17 @@ public class TeleportationOrb : MonoBehaviour
 
         _rigidbody = GetComponent<Rigidbody2D>();
         _lineRenderer = GetComponent<LineRenderer>();
+        _trail = GetComponent<SpriteTrailRenderer.SpriteTrailRenderer>();
         _rigidbody.isKinematic = true;
+        _trail.enabled = false;
         _orbsAllowedInPlay--;
-    }
 
-    private void Update()
-    {
-        // CAN ONLY TRANPORT WHEN GROUNDED
+        _contactFilter.useTriggers = false;
+
+        // this goes to your physics settings and get the layer matrix associated
+        //  with your gameobjects layer
+        _contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
+        _contactFilter.useLayerMask = true;
     }
 
     private Vector2 GetThrownVelocityFromAimPoint(Vector2 aimPoint)
@@ -40,6 +48,17 @@ public class TeleportationOrb : MonoBehaviour
 
     public void SetVelocity(Vector2 aimPoint)
     {
+        RaycastHit2D[] collidersHit = new RaycastHit2D[1];
+
+        int hits = _rigidbody.Cast(GetThrownVelocityFromAimPoint(aimPoint), _contactFilter, collidersHit, .0001f);
+
+        if (hits > 0)
+        {
+            GameObject.FindWithTag("Player").GetComponent<PlayerPlatformerController>().DestroyOrb(this);
+        }
+
+        _trail.enabled = true;
+
         transform.parent = null;
         _rigidbody.isKinematic = false;
 
@@ -49,6 +68,19 @@ public class TeleportationOrb : MonoBehaviour
 
     public void CreateTrajectoryGhost(Vector3 aimPoint)
     {
+        Vector3 position = transform.position;
+        position.z = -2;
+        transform.position = position;
+
+        RaycastHit2D[] collidersHit = new RaycastHit2D[1];
+
+        int wallImpacts = _rigidbody.Cast(GetThrownVelocityFromAimPoint(aimPoint), _contactFilter, collidersHit, .0001f);
+
+        if (wallImpacts > 0)
+        {
+            return;
+        }
+
         // have a maximum distance allowed for the trajectory simulation
         // then use a trail renderer to show the outline
 
@@ -57,7 +89,6 @@ public class TeleportationOrb : MonoBehaviour
         Vector2 simulationVelocity = GetThrownVelocityFromAimPoint(aimPoint);
 
         // go in partitions of .1s until a distance of 3 is reached
-        RaycastHit2D[] collidersHit = new RaycastHit2D[1];
         ContactFilter2D filter = new ContactFilter2D
         {
             layerMask = LayerMask.GetMask("Platform", "Button"),
@@ -101,12 +132,17 @@ public class TeleportationOrb : MonoBehaviour
         _lineRenderer.SetPositions(simulationPoints.ToArray());
     }
 
-    public void TransportPlayerToOrb()
+    public GameObject TransportPlayerToOrb()
     {
-        Vector3 newPosition = transform.position + Vector3.up * .17f;
-        _player.Teleport(newPosition, _rigidbody.velocity);
-        _orbsAllowedInPlay++;
-        Destroy(gameObject);
+        if (IsGrounded())
+        {
+            Vector3 newPosition = transform.position + Vector3.up * .17f;
+            _player.Teleport(newPosition, _rigidbody.velocity);
+            _orbsAllowedInPlay++;
+            return gameObject;
+        }
+
+        return null;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -114,9 +150,24 @@ public class TeleportationOrb : MonoBehaviour
         _rigidbody.velocity = Vector2.zero;
     }
 
-    private void OnDeath()
-    { 
-        
+    private bool IsGrounded()
+    {
+        bool grounded = false;
+
+        // cast this objects rigid body using the current velocity
+        RaycastHit2D[] hits = new RaycastHit2D[1];
+        int hitCount = _rigidbody.Cast(Vector2.up, _contactFilter, hits, Physics2D.gravity.y * Time.deltaTime * _rigidbody.gravityScale);
+
+        if (hitCount > 0)
+        {
+
+            if (hits[0].normal.y > _minGroundNormalY)
+            {
+                grounded = true;
+            }
+        }
+
+        return grounded;
     }
 }
 
